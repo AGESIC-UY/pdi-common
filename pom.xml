@@ -1,0 +1,130 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>uy.gub.agesic</groupId>
+    <artifactId>pdi-common</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <scm>
+        <connection>scm:git:git@gitlab.paas.agesic.red.uy:PDI2/pdi-common.git</connection>
+        <developerConnection>scm:git:git@gitlab.paas.agesic.red.uy:PDI2/pdi-common.git</developerConnection>
+        <url>http://gitlab.paas.agesic.red.uy/PDI2/pdi-common</url>
+        <tag>pys-evo</tag>
+    </scm>
+
+    <modules>
+        <module>common-utiles</module>
+        <module>common-webproxy</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+
+        <pmd-plugin-version>3.4</pmd-plugin-version>
+        <surefire-plugin-version>2.19</surefire-plugin-version>
+
+        <spring-cloud.release-train>Dalston.SR3</spring-cloud.release-train>
+        <spring-boot.version>1.5.6.RELEASE</spring-boot.version>
+        <javaee-api.version>7.0</javaee-api.version>
+        <commons-io.version>2.5</commons-io.version>
+        <feign-gson.version>9.5.0</feign-gson.version>
+        <httpclient.version>4.5.3</httpclient.version>
+        <jacoco-plugin-version>0.7.9</jacoco-plugin-version>
+        <jlibs-xmldog.version>2.2.1</jlibs-xmldog.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnViolation>false</failOnViolation>
+                    <aggregate>true</aggregate>
+                    <linkXRef>true</linkXRef>
+                    <verbose>true</verbose>
+                    <targetJdk>${java.version}</targetJdk>
+                    <minimumPriority>1</minimumPriority>
+                    <rulesets>
+                        <ruleset>${session.executionRootDirectory}/_recursos/pmd/agesic.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin-version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <releaseProfiles>releases</releaseProfiles>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+
